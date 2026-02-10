@@ -189,9 +189,30 @@
       noBtn.style.top  = y + "px";
     }
 
-    noBtn.addEventListener("mouseenter", scappa);
-    noBtn.addEventListener("mouseover", scappa);
+   // --- Mouse ---
+noBtn.addEventListener("mouseenter", scappa);
+noBtn.addEventListener("mouseover", scappa);
+
+// --- Pointer events (coprono mouse, penna e touch moderni) ---
+noBtn.addEventListener("pointerenter", scappa);
+noBtn.addEventListener("pointerover", scappa);
+noBtn.addEventListener("pointerdown", scappa);
+
+// --- Touch fallback (per vecchi browser iOS/Android) ---
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault(); // evita click fantasma
+  scappa();
+}, { passive: false });
+
+// --- Keyboard (accessibilità): se qualcuno lo mette a fuoco e prova ad attivarlo
+noBtn.addEventListener("focus", scappa);
+noBtn.addEventListener("click", (e) => {
+  // anche se ci riuscissero, scappa lo stesso 😅
+  e.preventDefault();
+  scappa();
+});
   </script>
 
 </body>
+
 </html>
