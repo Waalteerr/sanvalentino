@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8, initial-scale=1.0" />  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>San Valentino</title>
 
   <style>
@@ -9,31 +10,35 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: whitesmoke;
+      background-color: #f5f5f5;
     }
 
-    main { padding: 20px; }
+    main {
+      padding: 20px;
+    }
 
     footer {
       text-align: center;
       padding: 10px;
       margin-top: 20px;
+      font-size: 14px;
     }
 
     .card {
       background: pink;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 12px;
       max-width: 420px;
-      margin: 20px auto;
+      margin: auto;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
       text-align: center;
     }
 
     .card img {
       width: 100%;
-      border-radius: 10px;
+      border-radius: 12px;
       margin-bottom: 15px;
+      display: block;
     }
 
     .button-container {
@@ -42,22 +47,45 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
-      min-height: 56px;
+      min-height: 70px; /* più spazio per mobile */
     }
 
     .btn {
-      padding: 12px 20px;
-      font-size: 16px;
+      padding: 14px 24px;
+      font-size: 18px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       color: white;
+      transition: 0.2s;
     }
 
-    .btn1 { background-color: green; }
-    .btn2 { background-color: red; position: relative; }
+    .btn1 { background-color: #28a745; }
+    .btn2 { background-color: #dc3545; position: relative; }
 
-    .btn:hover { opacity: 0.9; }
+    .btn:hover { opacity: 0.85; }
+
+    /* FUOCHI D'ARTIFICIO */
+    .firework {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: explode 700ms ease-out forwards;
+    }
+
+    @keyframes explode {
+      from { transform: scale(0); opacity: 1; }
+      to   { transform: scale(14); opacity: 0; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 480px) {
+      .btn { font-size: 16px; padding: 12px 20px; }
+      .card { padding: 16px; }
+      h2 { font-size: 20px; }
+    }
   </style>
 </head>
 
@@ -66,7 +94,8 @@
   <main>
     <div class="card">
       <h2>Vorresti essere la mia Valentina?</h2>
-      <img src="rose.jpg" altass="button-container" id="box">
+
+      <img src="rose.jpg" alt="Rosa romantontainer" id="buttonsBox">
         <button class="btn btn1" id="yesBtn">Sì</button>
         <button class="btn btn2" id="noBtn">No</button>
       </div>
@@ -74,145 +103,154 @@
   </main>
 
   <footer>
-    P.S. mi manchi, speriamo tu abbia detto sì
+    P.S. mi manchi, speriamo tu abbia detto sì ❤️
   </footer>
 
+<script>
+/* ============================
+      FUOCHI D'ARTIFICIO
+============================ */
+function fireworks(x, y) {
+  for (let i = 0; i < 25; i++) {
+    const f = document.createElement("div");
+    f.className = "firework";
+    f.style.left = x + "px";
+    f.style.top = y + "px";
+    f.style.background = `hsl(${Math.random()*360},100%,60%)`;
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 700);
+  }
+}
 
-  <script>
-    // ----------------------------
-    // 1) nuova pagina generata al volo con Blob (SICURA)
-    // ----------------------------
-    document.getElementById("yesBtn").addEventListener("click", () => {
+document.getElementById("yesBtn").addEventListener("click", (e) => {
+  const r = e.target.getBoundingClientRect();
+  fireworks(r.left + r.width/2, r.top + r.height/2);
+  setTimeout(openLovePage, 300);
+});
 
-      const paginaHTML = `
+
+/* ============================
+   PAGINA “SÌ” GENERATA AL VOLO
+============================ */
+function openLovePage() {
+  const paginaHTML = `
 <!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIIIIIII</title>
+<title>SIIIIIII ❤️</title>
+
 <style>
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle, #ffffff, #ffe6f2 60%, #ffccdd);
-    overflow: hidden;
-  }
-  .box {
-    background: white;
-    padding: 25px 30px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  }
-  h1 {
-    font-size: 40px;
-    color: #d6006f;
-    margin: 0 0 10px;
-  }
-  .heart {
-    position: fixed;
-    top: -20px;
-    color: red;
-    font-size: 20px;
-    animation: fall 3s linear forwards;
-    pointer-events: none;
-  }
-  @keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-  }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle, #fff, #ffe6f2 60%, #ffccdd);
+  font-family: Arial;
+  overflow: hidden;
+}
+
+.box {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+h1 {
+  font-size: 38px;
+  color: #d6006f;
+  margin-bottom: 10px;
+}
+
+.pic {
+  max-width: 220px;
+  border-radius: 15px;
+}
+
+.heart {
+  position: fixed;
+  top: -40px;
+  animation: fall 3s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
 </style>
+
 </head>
 <body>
 
-  <div class="box">
-    <h1>SIIIIIII ❤️</h1>
-    </div>
-     
-    <script>    
-    function creaCuoricino() {
-      const cuore = document.createElement("div");
-      cuore.className = "heart";
-      cuore.textContent = "❤️";
-      cuore.style.left = Math.random() * 100 + "vw";
-      cuore.style.fontSize = (20 + Math.random() * 40) + "px";
-      document.body.appendChild(cuore);
-      setTimeout(() => cuore.remove(), 3000);
-    }
-    setInterval(creaCuoricino, 200);
-  <\/script>
+<div class="box">
+  <h1>SIIIIIII ❤️</h1>
+  heart.jpg
+</div>
+
+<script>
+function crea() {
+  const el = document.createElement("div");
+  el.className = "heart";
+  el.textContent = "❤️";
+  el.style.left = Math.random()*100 + "vw";
+  el.style.fontSize = 20 + Math.random()*40 + "px";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),3000);
+}
+setInterval(crea, 200);
+<\/script>
 
 </body>
 </html>
 `;
 
-      const blob = new Blob([paginaHTML], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
-    });
+  const blob = new Blob([paginaHTML], { type: "text/html" });
+  window.open(URL.createObjectURL(blob), "_blank");
+}
 
 
-    // ----------------------------
-    // 2) bottone NO che scappa
-    // ----------------------------
-    const noBtn = document.getElementById("noBtn");
-    const container = document.getElementById("box");
+/* ============================
+       BOTTONE NO CHE SCAPPA
+============================ */
+const noBtn = document.getElementById("noBtn");
+const container = document.getElementById("buttonsBox");
 
-    let absolute = false;
+let abs = false;
 
-    function enableAbsolute() {
-      if (absolute) return;
-      absolute = true;
+function enableAbs() {
+  if (abs) return;
+  abs = true;
 
-      const btnRect = noBtn.getBoundingClientRect();
-      const boxRect = container.getBoundingClientRect();
+  const r = noBtn.getBoundingClientRect();
+  const c = container.getBoundingClientRect();
 
-      noBtn.style.position = "absolute";
-      noBtn.style.left = (btnRect.left - boxRect.left) + "px";
-      noBtn.style.top  = (btnRect.top  - boxRect.top) + "px";
-    }
+  noBtn.style.position = "absolute";
+  noBtn.style.left = (r.left - c.left) + "px";
+  noBtn.style.top  = (r.top - c.top) + "px";
+}
 
-    function scappa() {
-      enableAbsolute();
+function escape() {
+  enableAbs();
 
-      const boxRect = container.getBoundingClientRect();
-      const maxX = boxRect.width - noBtn.offsetWidth;
-      const maxY = boxRect.height - noBtn.offsetHeight;
+  const c = container.getBoundingClientRect();
+  const maxX = c.width - noBtn.offsetWidth;
+  const maxY = c.height - noBtn.offsetHeight;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+  noBtn.style.left = Math.random()*maxX + "px";
+  noBtn.style.top  = Math.random()*maxY + "px";
+}
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top  = y + "px";
-    }
-
-   // --- Mouse ---
-noBtn.addEventListener("mouseenter", scappa);
-noBtn.addEventListener("mouseover", scappa);
-
-// --- Pointer events (coprono mouse, penna e touch moderni) ---
-noBtn.addEventListener("pointerenter", scappa);
-noBtn.addEventListener("pointerover", scappa);
-noBtn.addEventListener("pointerdown", scappa);
-
-// --- Touch fallback (per vecchi browser iOS/Android) ---
-noBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault(); // evita click fantasma
-  scappa();
-}, { passive: false });
-
-// --- Keyboard (accessibilità): se qualcuno lo mette a fuoco e prova ad attivarlo
-noBtn.addEventListener("focus", scappa);
-noBtn.addEventListener("click", (e) => {
-  // anche se ci riuscissero, scappa lo stesso 😅
-  e.preventDefault();
-  scappa();
-});
-  </script>
+noBtn.addEventListener("mouseenter", escape);
+noBtn.addEventListener("mouseover", escape);
+noBtn.addEventListener("pointerdown", escape);
+noBtn.addEventListener("pointerenter", escape);
+noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); escape(); }, {passive:false});
+noBtn.addEventListener("click",(e)=>{e.preventDefault(); escape();});
+</script>
 
 </body>
-
 </html>
